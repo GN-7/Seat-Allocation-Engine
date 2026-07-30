@@ -13,10 +13,12 @@ private:
     bool isAssigned = false;
     std::string AssignedSeatCode = "0000";
     std::string *choiceList;
+    int choiceCount;
+    
 
 public:
     friend class System;
-    Student(int rnk, std::string list[]);
+    Student(int rnk, std::string list[], int count);
     void display()
     {
         std::cout << "Student Rank: " << rank << std::endl;
@@ -24,10 +26,11 @@ public:
     }
 };
 
-Student::Student(int rnk, std::string list[])
+Student::Student(int rnk, std::string list[], int count)
 {
     rank = rnk;
     choiceList = list;
+    choiceCount = count;
 }
 
 class Seats
@@ -84,7 +87,7 @@ public:
     {
         for (int i = 0; i < studentsListSize; i++)
         {
-            for (int j = 0; j < seatsListSize; j++)
+            for (int j = 0; j < studentsList[i].choiceCount; j++)
             {
                 for (int k = 0; k < seatsListSize; k++)
                 {
@@ -92,6 +95,11 @@ public:
                     {
                         studentsList[i].AssignedSeatCode = seatsList[k].seatCode;
                         studentsList[i].isAssigned = true;
+                        if (seatsList[k].availableSeats == 1)
+                        {
+                            std::cout<<"The closing rank for seat with code "<<seatsList[k].seatCode<<" is "<<studentsList[i].rank<<std::endl;
+                        }
+                        
                         seatsList[k].availableSeats = seatsList[k].availableSeats - 1;
                         break;
                     }
@@ -104,6 +112,7 @@ public:
                     break;
                 }
             }
+
         }
     }
 };
@@ -122,21 +131,21 @@ int main()
     std::string c2[] = {"0102", "0101", "0103"};
     std::string c3[] = {"0101", "0103", "0102"};
 
-    Student array1[] = {Student(1, c1),
-                        Student(2, c2),
-                        Student(3, c3),
-                        Student(4, c1),
-                        Student(5, c2),
-                        Student(6, c3),
-                        Student(7, c1),
-                        Student(8, c2),
-                        Student(9, c3),
-                        Student(10, c1),
-                        Student(11, c2),
-                        Student(12, c3),
-                        Student(13, c1),
-                        Student(14, c2),
-                        Student(15, c3)};
+    Student array1[] = {Student(1, c1, 3),
+                        Student(2, c2, 3),
+                        Student(3, c3, 3),
+                        Student(4, c1, 3),
+                        Student(5, c2, 3),
+                        Student(6, c3, 3),
+                        Student(7, c1, 3),
+                        Student(8, c2, 3),
+                        Student(9, c3, 3),
+                        Student(10, c1, 3),
+                        Student(11, c2, 3),
+                        Student(12, c3, 3),
+                        Student(13, c1, 3),
+                        Student(14, c2, 3),
+                        Student(15, c3, 3)};
 
     Seats array2[] = {Seats("0101", 5),
                       Seats("0102", 5),
