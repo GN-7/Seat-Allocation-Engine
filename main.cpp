@@ -84,33 +84,26 @@ public:
     {
         for (int i = 0; i < studentsListSize; i++)
         {
-            // cout<<"Entered Student Loop"<<endl;
             for (int j = 0; j < seatsListSize; j++)
             {
-                // cout<<"Entered Choices Loop"<<endl;
-                //  if studentsList[i].choiceList[j] in seatsList and its count > 0, then assign.
                 for (int k = 0; k < seatsListSize; k++)
-                { // cout<<"Entered Assignment Loop"<<endl;
+                {
                     if (studentsList[i].choiceList[j] == seatsList[k].seatCode && seatsList[k].availableSeats > 0)
                     {
                         studentsList[i].AssignedSeatCode = seatsList[k].seatCode;
                         studentsList[i].isAssigned = true;
                         seatsList[k].availableSeats = seatsList[k].availableSeats - 1;
-                        // cout<<"Assigned Successfully"<<endl;
                         goto exit_choices;
                     }
                     else
                     {
-                        // cout<<"Assignment Failed, iterating"<<endl;
                         continue;
                     }
                 }
-                // cout<<"Exited Assignment Loop"<<endl;
             }
         exit_choices:
             std::cout << "Exited Choices Loop" << std::endl;
         }
-        // cout<<"Exited Student Lopp"<<endl;
     }
 };
 
