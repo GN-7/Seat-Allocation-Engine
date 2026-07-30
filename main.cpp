@@ -93,16 +93,17 @@ public:
                         studentsList[i].AssignedSeatCode = seatsList[k].seatCode;
                         studentsList[i].isAssigned = true;
                         seatsList[k].availableSeats = seatsList[k].availableSeats - 1;
-                        goto exit_choices;
+                        break;
                     }
                     else
                     {
                         continue;
                     }
                 }
+                if (studentsList[i].isAssigned){
+                    break;
+                }
             }
-        exit_choices:
-            std::cout << "Exited Choices Loop" << std::endl;
         }
     }
 };
