@@ -76,46 +76,42 @@ public:
         {
             cout << "Student Rank: " << studentsList[i].rank << endl;
             cout << "Assigned Seat Code: " << studentsList[i].AssignedSeatCode << endl;
+            cout<<"-----------------"<<endl;
         }
-    }
-
-    bool in(string one, Seats two[], int size){
-        for (int i = 0; i < size; i++)
-        {
-            if (one == two[i].seatCode && two[i].availableSeats > 0){
-                studentsList[i].isAssigned = true;
-                studentsList[i].AssignedSeatCode = two[i].seatCode;
-                two[i].availableSeats = two[i].availableSeats - 1;
-                return true;
-            }
-            else
-            {
-                continue;
-            }
-            
-        }
-        return false;
     }
 
     void AssignSeats()
     {
-        for (int i = 0; i < studentsListSize; i++)
-        {
-            for (int j = 0; i < seatsListSize; j++)
-            {
-            // if   studentsList[i].choiceList[j] in seatsList and its count > 0, then assign.
-            if (in(studentsList[i].choiceList[j], seatsList, 3) == true)
-            {
-                break;
+        for (int i = 0; i < 15; i++)
+        {   
+            //cout<<"Entered Student Loop"<<endl;
+            for (int j = 0; j < 3; j++)
+            {  
+                //cout<<"Entered Choices Loop"<<endl;
+                // if studentsList[i].choiceList[j] in seatsList and its count > 0, then assign.
+                for (int k = 0; k < 3; k++)
+                {   //cout<<"Entered Assignment Loop"<<endl;
+                    if (studentsList[i].choiceList[j] == seatsList[k].seatCode && seatsList[k].availableSeats > 0)
+                    {
+                        studentsList[i].AssignedSeatCode = seatsList[k].seatCode;
+                        studentsList[i].isAssigned = true;
+                         seatsList[k].availableSeats = seatsList[k].availableSeats - 1;
+                         //cout<<"Assigned Successfully"<<endl;
+                        goto exit_choices;
+                    }
+                    else
+                    {
+                        //cout<<"Assignment Failed, iterating"<<endl;
+                        continue;
+                    }
+                    
+                }
+                //cout<<"Exited Assignment Loop"<<endl;
             }
-            else
-            {
-                continue;
-            }
-                       
-            }
-            
+            exit_choices:
+            //cout<<"Exited Choices Loop"<<endl;
         }
+        //cout<<"Exited Student Lopp"<<endl;
     }
 };
 
@@ -131,7 +127,7 @@ int main()
 {
     string c1[] = {"0101", "0102", "0103"};
     string c2[] = {"0102", "0101", "0103"};
-    string c3[] = {"0103", "0101", "0102"};
+    string c3[] = {"0101", "0103", "0102"};
     Student s1(1, c1);
     Student s2(2, c2);
     Student s3(3, c3);
