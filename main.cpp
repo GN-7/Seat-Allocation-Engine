@@ -74,6 +74,31 @@ public:
         }
         
     }
+
+    void AssignSeats(){
+        for (int i = 0; i < studentsListSize; i++)
+        {
+            
+            for (int j = 0; j < seatsListSize; j++)
+            {
+                if (studentsList[i].choiceList[j] == seatsList[j].seatCode && seatsList[j].availableSeats > 0)
+                {
+                    studentsList[i].AssignedSeatCode = seatsList[j].seatCode;
+                    studentsList[i].isAssigned = true;
+                    seatsList[j].availableSeats = seatsList[j].availableSeats - 1;
+                    break;
+                }
+                else
+                {
+                    continue;
+                }
+                
+                
+            }
+            
+        }
+        
+    }
 };
 
 System::System(Seats array1[],int seatListSize, Student array2[], int studentListSize)
@@ -87,18 +112,33 @@ System::System(Seats array1[],int seatListSize, Student array2[], int studentLis
 
 
 int main(){
-    string c1[] = {"0101", "0202"};
-    string c2[] = {"0101", "0102"};
+    string c1[] = {"0101", "0102", "0103"};
     Student s1(1, c1);
-    Student s2(2, c2);
+    Student s2(2, c1);
+    Student s3(3, c1);
+    Student s4(4, c1);
+    Student s5(5, c1);
+    Student s6(6, c1);
+    Student s7(7, c1);
+    Student s8(8, c1);
+    Student s9(9, c1);
+    Student s10(10, c1);
+    Student s11(11, c1);
+    Student s12(12, c1);
+    Student s13(13, c1);
+    Student s14(14, c1);
+    Student s15(15, c1);
 
-    Seats seat1("0101", 10);
-    Seats seat2("0102", 10);
 
-    Student array1[] = {s1, s2};
-    Seats array2[] = {seat1, seat2};
-    System sys(array2, 2, array1, 2);
-    sys.displaySeats();
+    Seats seat1("0101", 5);
+    Seats seat2("0102", 5);
+    Seats seat3("0103", 5);
+
+    Student array1[] = {s1, s2, s3, s4, s5, s6, s7, s8, s9, s10, s11, s12, s13, s14, s15};
+    Seats array2[] = {seat1, seat2, seat3};
+    System sys(array2, 3, array1, 15);
+    sys.AssignSeats();
+
     sys.displayStudents();
     return 0;
 }
