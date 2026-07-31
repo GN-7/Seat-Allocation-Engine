@@ -169,5 +169,5 @@ int main()
     AllocationEngine sys(seats, 3, students, 18);
     sys.AssignSeats();
     sys.displayUnAssignedStudents();
-    return 0;
+    return 0; 
 }
