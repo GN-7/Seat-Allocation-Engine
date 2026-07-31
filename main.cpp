@@ -2,7 +2,7 @@
 #include <string>
 
 /*Class Definitions*/
-class System;
+class AllocationEngine;
 class Student;
 class Seats;
 
@@ -17,7 +17,7 @@ private:
     
 
 public:
-    friend class System;
+    friend class AllocationEngine;
     Student(int rnk, std::string list[], int count);
     void display()
     {
@@ -40,7 +40,7 @@ private:
     int availableSeats;
 
 public:
-    friend class System;
+    friend class AllocationEngine;
     Seats(std::string code, int count);
     void display()
     {
@@ -55,7 +55,7 @@ Seats::Seats(std::string code, int count)
     availableSeats = count;
 }
 
-class System
+class AllocationEngine
 {
 private:
     Seats *seatsList;
@@ -64,7 +64,7 @@ private:
     int seatsListSize;
 
 public:
-    System(Seats array1[], int seatListSize, Student array2[], int studentListSize);
+    AllocationEngine(Seats array1[], int seatListSize, Student array2[], int studentListSize);
     void displaySeats()
     {
         for (int i = 0; i < seatsListSize; i++)
@@ -88,7 +88,7 @@ public:
         for (int i = 0; i < studentsListSize; i++)
         {
             for (int j = 0; j < studentsList[i].choiceCount; j++)
-            {
+            { 
                 for (int k = 0; k < seatsListSize; k++)
                 {
                     if (studentsList[i].choiceList[j] == seatsList[k].seatCode && seatsList[k].availableSeats > 0)
@@ -115,9 +115,21 @@ public:
 
         }
     }
+
+    void displayUnAssignedStudents(){
+        for (int i = 0; i < studentsListSize; i++)
+        {
+            if (studentsList[i].isAssigned == false)
+            {
+                studentsList[i].display();
+            }
+            
+        }
+        
+    }
 };
 
-System::System(Seats array1[], int seatListSize, Student array2[], int studentListSize)
+AllocationEngine::AllocationEngine(Seats array1[], int seatListSize, Student array2[], int studentListSize)
 {
     seatsList = array1;
     seatsListSize = seatListSize;
@@ -131,7 +143,7 @@ int main()
     std::string c2[] = {"0102", "0101", "0103"};
     std::string c3[] = {"0101", "0103", "0102"};
 
-    Student array1[] = {Student(1, c1, 3),
+    Student students[] = {Student(1, c1, 3),
                         Student(2, c2, 3),
                         Student(3, c3, 3),
                         Student(4, c1, 3),
@@ -145,14 +157,17 @@ int main()
                         Student(12, c3, 3),
                         Student(13, c1, 3),
                         Student(14, c2, 3),
-                        Student(15, c3, 3)};
+                        Student(15, c3, 3),
+                        Student(16, c1, 3),
+                        Student(17, c2, 3),
+                        Student(18, c3, 3)};
 
-    Seats array2[] = {Seats("0101", 5),
+    Seats seats[] = {Seats("0101", 5),
                       Seats("0102", 5),
                       Seats("0103", 5)};
 
-    System sys(array2, 3, array1, 15);
+    AllocationEngine sys(seats, 3, students, 18);
     sys.AssignSeats();
-    sys.displayStudents();
+    sys.displayUnAssignedStudents();
     return 0;
 }
