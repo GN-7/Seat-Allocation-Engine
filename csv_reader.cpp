@@ -4,6 +4,7 @@
 #include <vector>
 
 class AllocationEngine;
+class Course;
 
 class Student
 {
@@ -26,6 +27,19 @@ Student::Student(int r, std::string aS, std::string c1, std::string c2, std::str
     allotedSeat = aS;
 }
 
+class Course
+{
+    friend class AllocationEngine;
+    std::string courseCode;
+    int seatCount;
+    Course(std::string s, int r);
+};
+Course::Course(std::string s, int r)
+{
+    courseCode = s;
+    seatCount = r;
+}
+
 class AllocationEngine
 {
 private:
@@ -33,6 +47,7 @@ public:
     std::vector<Student> readStudentData()
     {
         std::vector<Student> studentsList;
+
         std::fstream file("file.csv");
         std::string line;
         std::getline(file, line);
@@ -65,11 +80,36 @@ public:
 
         return studentsList;
     }
+
+    std::vector<Course> readCourseData()
+    {
+        std::vector<Course> courseList;
+
+        std::fstream file("file2.csv");
+        std::string line;
+        std::getline(file, line);
+
+        while (std::getline(file, line))
+        {
+
+            std::string seatcode = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1, line.length());
+
+            std::string count_s = line.substr(0, line.find(','));
+            int count = std::stoi(count_s);
+
+            courseList.push_back(Course(seatcode, count));
+            std::cout << "Done!" << std::endl;
+        };
+
+        return courseList;
+    }
 };
 
 int main()
 {
     AllocationEngine sys;
     sys.readStudentData();
+    sys.readCourseData();
     return 0;
 }
