@@ -10,10 +10,11 @@ class Student
 {
     friend class AllocationEngine;
     int rank;
-    std::string allotedSeat;
+    std::string allotedSeat = "0000";
     std::string Choice1;
     std::string Choice2;
     std::string Choice3;
+    std::vector <std::string> ChoiceList;
 
     Student(int r, std::string aS, std::string c1, std::string c2, std::string c3);
 };
@@ -23,7 +24,8 @@ Student::Student(int r, std::string aS, std::string c1, std::string c2, std::str
     rank = r;
     Choice1 = c1;
     Choice2 = c2;
-    Choice1 = c3;
+    Choice3 = c3;
+    ChoiceList = {c1, c2, c3};
     allotedSeat = aS;
 }
 
@@ -104,12 +106,41 @@ public:
 
         return courseList;
     }
+
+    std::vector<Student> AssignSeats(std::vector<Student> s, std::vector<Course> c){
+        for (int i = 0; i < s.size(); i++)
+        {
+            for (int j = 0; j < s[i].ChoiceList.size(); j++)
+            {
+                for (int k = 0; k < c.size(); k++)
+                {
+                    if (s[i].ChoiceList[j] == c[k].courseCode && c[k].seatCount > 0)
+                    {
+                        s[i].allotedSeat = c[k].courseCode;
+                        c[k].seatCount = c[k].seatCount - 1;
+                        break;
+                    }
+                    
+                    
+                }
+                if (s[i].allotedSeat != "0000")
+                {
+                    break;
+                }
+                
+                
+            }
+            
+        }
+        return s;
+    }
 };
 
 int main()
 {
     AllocationEngine sys;
-    sys.readStudentData();
-    sys.readCourseData();
+    std::vector<Student> a = sys.readStudentData();
+    std::vector<Course> b = sys.readCourseData();
+    sys.AssignSeats(a, b);
     return 0;
 }
