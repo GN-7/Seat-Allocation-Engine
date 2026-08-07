@@ -52,7 +52,7 @@ public:
     {
         std::vector<Student> studentsList;
 
-        std::fstream file("file.csv");
+        std::fstream file("studentData.csv");
         std::string line;
         std::getline(file, line);
 
@@ -88,7 +88,7 @@ public:
     {
         std::vector<Course> courseList;
 
-        std::fstream file("file2.csv");
+        std::fstream file("courseData.csv");
         std::string line;
         std::getline(file, line);
 
@@ -134,7 +134,7 @@ public:
     void writeStudentData(std::vector<Student> s)
     {
         std::ofstream out_file;
-        out_file.open("file3.csv");
+        out_file.open("outputData.csv");
         out_file << "Name" << "," << "Rank" << "," << "Alloted Seat Code" << "\n";
         for (int i = 0; i < s.size(); i++)
         {
