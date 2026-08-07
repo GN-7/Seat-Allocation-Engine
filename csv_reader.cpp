@@ -137,12 +137,12 @@ public:
     {
         std::ofstream out_file;
         out_file.open("file3.csv");
-        out_file << "Name" <<"," << "Rank" << "," << "Alloted Seat Code" <<"\n";
+        out_file << "Name" << "," << "Rank" << "," << "Alloted Seat Code" << "\n";
         for (int i = 0; i < s.size(); i++)
         {
-            out_file << s[i].name <<"," << s[i].rank << "," << s[i].allotedSeat <<"\n";
+            out_file << s[i].name << "," << s[i].rank << "," << s[i].allotedSeat << "\n";
         }
-                    
+
         out_file.close();
     }
 };
