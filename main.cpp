@@ -1,173 +1,156 @@
 #include <iostream>
+#include <fstream>
 #include <string>
+#include <vector>
 
-/*Class Definitions*/
 class AllocationEngine;
-class Student;
-class Seats;
+class Course;
 
 class Student
 {
-private:
-    int rank;
-    bool isAssigned = false;
-    std::string AssignedSeatCode = "0000";
-    std::string *choiceList;
-    int choiceCount;
-    
-
-public:
     friend class AllocationEngine;
-    Student(int rnk, std::string list[], int count);
-    void display()
-    {
-        std::cout << "Student Rank: " << rank << std::endl;
-        std::cout << "Student Assigned Seat: " << AssignedSeatCode << std::endl;
-    }
+    int rank;
+    std::string allotedSeat = "0000";
+    std::string Choice1;
+    std::string Choice2;
+    std::string Choice3;
+    std::vector<std::string> ChoiceList;
+    std::string name;
+
+    Student(std::string n, int r, std::string aS, std::string c1, std::string c2, std::string c3);
 };
 
-Student::Student(int rnk, std::string list[], int count)
+Student::Student(std::string n, int r, std::string aS, std::string c1, std::string c2, std::string c3)
 {
-    rank = rnk;
-    choiceList = list;
-    choiceCount = count;
+    name = n;
+    rank = r;
+    Choice1 = c1;
+    Choice2 = c2;
+    Choice3 = c3;
+    ChoiceList = {c1, c2, c3};
+    allotedSeat = aS;
 }
 
-class Seats
+class Course
 {
-private:
-    std::string seatCode;
-    int availableSeats;
-
-public:
     friend class AllocationEngine;
-    Seats(std::string code, int count);
-    void display()
-    {
-        std::cout << "Seat Code: " << seatCode << std::endl;
-        std::cout << "Seats Available: " << availableSeats << std::endl;
-    }
+    std::string courseCode;
+    int seatCount;
+    Course(std::string s, int r);
 };
-
-Seats::Seats(std::string code, int count)
+Course::Course(std::string s, int r)
 {
-    seatCode = code;
-    availableSeats = count;
+    courseCode = s;
+    seatCount = r;
 }
 
 class AllocationEngine
 {
 private:
-    Seats *seatsList;
-    Student *studentsList;
-    int studentsListSize;
-    int seatsListSize;
-
 public:
-    AllocationEngine(Seats array1[], int seatListSize, Student array2[], int studentListSize);
-    void displaySeats()
+    std::vector<Student> readStudentData()
     {
-        for (int i = 0; i < seatsListSize; i++)
+        std::vector<Student> studentsList;
+
+        std::fstream file("file.csv");
+        std::string line;
+        std::getline(file, line);
+
+        while (std::getline(file, line))
         {
-            std::cout << "Seat Code: " << seatsList[i].seatCode << std::endl;
-            std::cout << "Available Seats: " << seatsList[i].availableSeats << std::endl;
-        }
-    }
-    void displayStudents()
-    {
-        for (int i = 0; i < studentsListSize; i++)
-        {
-            std::cout << "Student Rank: " << studentsList[i].rank << std::endl;
-            std::cout << "Assigned Seat Code: " << studentsList[i].AssignedSeatCode << std::endl;
-            std::cout << "-----------------" << std::endl;
-        }
+
+            std::string name = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1, line.length());
+
+            std::string rank_s = line.substr(0, line.find(','));
+            int rank = std::stoi(rank_s);
+            line = line.substr(line.find(',') + 1, line.length());
+
+            std::string allotedSeat = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1, line.length());
+
+            std::string choice1 = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1, line.length());
+
+            std::string choice2 = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1, line.length());
+
+            std::string choice3 = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1, line.length());
+
+            studentsList.push_back(Student(name, rank, allotedSeat, choice1, choice2, choice3));
+        };
+
+        return studentsList;
     }
 
-    void AssignSeats()
+    std::vector<Course> readCourseData()
     {
-        for (int i = 0; i < studentsListSize; i++)
+        std::vector<Course> courseList;
+
+        std::fstream file("file2.csv");
+        std::string line;
+        std::getline(file, line);
+
+        while (std::getline(file, line))
         {
-            for (int j = 0; j < studentsList[i].choiceCount; j++)
-            { 
-                for (int k = 0; k < seatsListSize; k++)
+
+            std::string seatcode = line.substr(0, line.find(','));
+            line = line.substr(line.find(',') + 1, line.length());
+
+            std::string count_s = line.substr(0, line.find(','));
+            int count = std::stoi(count_s);
+
+            courseList.push_back(Course(seatcode, count));
+        };
+
+        return courseList;
+    }
+
+    std::vector<Student> AssignSeats(std::vector<Student> s, std::vector<Course> c)
+    {
+        for (int i = 0; i < s.size(); i++)
+        {
+            for (int j = 0; j < s[i].ChoiceList.size(); j++)
+            {
+                for (int k = 0; k < c.size(); k++)
                 {
-                    if (studentsList[i].choiceList[j] == seatsList[k].seatCode && seatsList[k].availableSeats > 0)
+                    if (s[i].ChoiceList[j] == c[k].courseCode && c[k].seatCount > 0)
                     {
-                        studentsList[i].AssignedSeatCode = seatsList[k].seatCode;
-                        studentsList[i].isAssigned = true;
-                        if (seatsList[k].availableSeats == 1)
-                        {
-                            std::cout<<"The closing rank for seat with code "<<seatsList[k].seatCode<<" is "<<studentsList[i].rank<<std::endl;
-                        }
-                        
-                        seatsList[k].availableSeats = seatsList[k].availableSeats - 1;
+                        s[i].allotedSeat = c[k].courseCode;
+                        c[k].seatCount = c[k].seatCount - 1;
                         break;
                     }
-                    else
-                    {
-                        continue;
-                    }
                 }
-                if (studentsList[i].isAssigned){
+                if (s[i].allotedSeat != "0000")
+                {
                     break;
                 }
             }
-
         }
+        return s;
     }
 
-    void displayUnAssignedStudents(){
-        for (int i = 0; i < studentsListSize; i++)
+    void writeStudentData(std::vector<Student> s)
+    {
+        std::ofstream out_file;
+        out_file.open("file3.csv");
+        out_file << "Name" << "," << "Rank" << "," << "Alloted Seat Code" << "\n";
+        for (int i = 0; i < s.size(); i++)
         {
-            if (studentsList[i].isAssigned == false)
-            {
-                studentsList[i].display();
-            }
-            
+            out_file << s[i].name << "," << s[i].rank << "," << s[i].allotedSeat << "\n";
         }
-        
+
+        out_file.close();
     }
 };
 
-AllocationEngine::AllocationEngine(Seats array1[], int seatListSize, Student array2[], int studentListSize)
-{
-    seatsList = array1;
-    seatsListSize = seatListSize;
-    studentsList = array2;
-    studentsListSize = studentListSize;
-}
-
 int main()
 {
-    std::string c1[] = {"0101", "0102", "0103"};
-    std::string c2[] = {"0102", "0101", "0103"};
-    std::string c3[] = {"0101", "0103", "0102"};
-
-    Student students[] = {Student(1, c1, 3),
-                        Student(2, c2, 3),
-                        Student(3, c3, 3),
-                        Student(4, c1, 3),
-                        Student(5, c2, 3),
-                        Student(6, c3, 3),
-                        Student(7, c1, 3),
-                        Student(8, c2, 3),
-                        Student(9, c3, 3),
-                        Student(10, c1, 3),
-                        Student(11, c2, 3),
-                        Student(12, c3, 3),
-                        Student(13, c1, 3),
-                        Student(14, c2, 3),
-                        Student(15, c3, 3),
-                        Student(16, c1, 3),
-                        Student(17, c2, 3),
-                        Student(18, c3, 3)};
-
-    Seats seats[] = {Seats("0101", 5),
-                      Seats("0102", 5),
-                      Seats("0103", 5)};
-
-    AllocationEngine sys(seats, 3, students, 18);
-    sys.AssignSeats();
-    sys.displayUnAssignedStudents();
-    return 0; 
+    AllocationEngine sys;
+    std::vector<Student> a = sys.readStudentData();
+    std::vector<Course> b = sys.readCourseData();
+    std::vector<Student> c = sys.AssignSeats(a, b);
+    sys.writeStudentData(c);
+    return 0;
 }
