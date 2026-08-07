@@ -10,25 +10,19 @@ class Student
 {
     friend class AllocationEngine;
     int rank;
+    bool isAssigned = false;
     std::string allotedSeat = "0000";
-    std::string Choice1;
-    std::string Choice2;
-    std::string Choice3;
     std::vector<std::string> ChoiceList;
     std::string name;
 
-    Student(std::string n, int r, std::string aS, std::string c1, std::string c2, std::string c3);
+    Student(std::string n, int r, std::string c1, std::string c2, std::string c3);
 };
 
-Student::Student(std::string n, int r, std::string aS, std::string c1, std::string c2, std::string c3)
+Student::Student(std::string n, int r, std::string c1, std::string c2, std::string c3)
 {
     name = n;
     rank = r;
-    Choice1 = c1;
-    Choice2 = c2;
-    Choice3 = c3;
     ChoiceList = {c1, c2, c3};
-    allotedSeat = aS;
 }
 
 class Course
@@ -66,9 +60,6 @@ public:
             int rank = std::stoi(rank_s);
             line = line.substr(line.find(',') + 1, line.length());
 
-            std::string allotedSeat = line.substr(0, line.find(','));
-            line = line.substr(line.find(',') + 1, line.length());
-
             std::string choice1 = line.substr(0, line.find(','));
             line = line.substr(line.find(',') + 1, line.length());
 
@@ -78,7 +69,7 @@ public:
             std::string choice3 = line.substr(0, line.find(','));
             line = line.substr(line.find(',') + 1, line.length());
 
-            studentsList.push_back(Student(name, rank, allotedSeat, choice1, choice2, choice3));
+            studentsList.push_back(Student(name, rank, choice1, choice2, choice3));
         };
 
         return studentsList;
@@ -107,7 +98,7 @@ public:
         return courseList;
     }
 
-    std::vector<Student> AssignSeats(std::vector<Student> s, std::vector<Course> c)
+    std::vector<Student> AssignSeats(std::vector<Student> &s, std::vector<Course> &c)
     {
         for (int i = 0; i < s.size(); i++)
         {
@@ -119,10 +110,11 @@ public:
                     {
                         s[i].allotedSeat = c[k].courseCode;
                         c[k].seatCount = c[k].seatCount - 1;
+                        s[i].isAssigned = true;
                         break;
                     }
                 }
-                if (s[i].allotedSeat != "0000")
+                if (s[i].isAssigned)
                 {
                     break;
                 }
