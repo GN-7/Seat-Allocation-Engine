@@ -40,7 +40,6 @@ Course::Course(std::string s, int r)
 
 class AllocationEngine
 {
-private:
 public:
     std::vector<Student> readStudentData()
     {
