@@ -3,7 +3,34 @@
 A basic implementation of college seat allocation system in C++ inspired by JoSAA.
 It does not currently attempt to reproduce the complete rules of real counselling systems.
 
+## Concepts Explored
 
+ - ### Object Oriented Programming
+ - ### File Handling
+ - ### Algorithmic Thinking
+
+## How the Program Works
+ - There are three fundamental entities in this program. The Student, Course and the Allocation Engine itself.
+ - Each Student has a Rank and a list of choices.
+ - Each Course has a course code (0101, 0102, 0103) and a seat capacity.
+ - The Engine itself has no attributes, it has only methods.
+
+   ### Step 1
+    - The Engine reads the student data from the CSV file and creates corresponding Student objects.
+    - All objects are stored in a vector for further manipulation.
+  
+   ### Step 2
+    - The data is sorted by rank using a simple lambda with a std::sort method.
+    - A new, sorted vector is returned.
+
+   ### Step 3
+    - The Engine reads the course data from the CSV file and creates corresponding Course objects.
+  
+   ### Step 4
+    - The Engine then assigns the seats using the logic specified below.
+  
+   ### Step 5
+    - The assigned seat data is written to a new CSV file.
 
 ## The Core Logic
 
@@ -12,12 +39,6 @@ It does not currently attempt to reproduce the complete rules of real counsellin
 Students with better ranks are processed first.
 For each student, the engine checks their course preferences in order.
 The first preferred course with an available seat is allocated to the student, and the remaining seat count for that course is reduced.
-
-## Concepts Explored
-
- - ### Object Oriented Programming
- - ### File Handling
- - ### Algorithmic Thinking
 
 ## Building and Running
 
