@@ -2,6 +2,7 @@
 #include <fstream>
 #include <string>
 #include <vector>
+#include <algorithm>
 
 class AllocationEngine;
 class Course;
@@ -73,6 +74,12 @@ public:
 
         return studentsList;
     }
+        
+    std::vector<Student> Sort(std::vector<Student> &v)
+    {
+        std::sort(v.begin(), v.end(), [](const Student& a, const Student& b){ return a.rank < b.rank; });
+        return v;
+    }
 
     std::vector<Course> readCourseData()
     {
@@ -140,8 +147,10 @@ int main()
 {
     AllocationEngine sys;
     std::vector<Student> a = sys.readStudentData();
+    std::vector<Student> d = sys.Sort(a);
+
     std::vector<Course> b = sys.readCourseData();
-    std::vector<Student> c = sys.AssignSeats(a, b);
+    std::vector<Student> c = sys.AssignSeats(d, b);
     sys.writeStudentData(c);
     return 0;
 }
