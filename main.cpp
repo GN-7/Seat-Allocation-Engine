@@ -74,10 +74,11 @@ public:
 
         return studentsList;
     }
-        
+
     std::vector<Student> Sort(std::vector<Student> &v)
     {
-        std::sort(v.begin(), v.end(), [](const Student& a, const Student& b){ return a.rank < b.rank; });
+        std::sort(v.begin(), v.end(), [](const Student &a, const Student &b)
+                  { return a.rank < b.rank; });
         return v;
     }
 
@@ -146,11 +147,11 @@ public:
 int main()
 {
     AllocationEngine sys;
-    std::vector<Student> a = sys.readStudentData();
-    std::vector<Student> d = sys.Sort(a);
+    std::vector<Student> inputStudentData = sys.readStudentData();
+    std::vector<Student> sortedStudentData = sys.Sort(inputStudentData);
 
-    std::vector<Course> b = sys.readCourseData();
-    std::vector<Student> c = sys.AssignSeats(d, b);
-    sys.writeStudentData(c);
+    std::vector<Course> inputCourseData = sys.readCourseData();
+    std::vector<Student> outputStudentData = sys.AssignSeats(sortedStudentData, inputCourseData);
+    sys.writeStudentData(outputStudentData);
     return 0;
 }

@@ -1,3 +1,5 @@
 # Future Work
 
- - Implement a sorting algorithm as a fail-safe.
+ - Custom Choice Count
+ - Better Parsing and Algorithm
+ - Multiple Rounds
