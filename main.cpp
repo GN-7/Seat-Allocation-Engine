@@ -122,7 +122,7 @@ public:
         return s;
     }
 
-    void writeStudentData(std::vector<Student> s)
+    void writeStudentData(std::vector<Student> &s)
     {
         std::ofstream out_file;
         out_file.open("outputData.csv");
